@@ -18,6 +18,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: publish
+          fetch-depth: 0
+      - run: |
+          git config user.name "github action"
+          git config user.email "slimemoss@github.action"
+          git fetch origin
+          git merge origin/master
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12
@@ -27,7 +35,6 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "[Bot] auto update"
-          file_pattern: public_data/*.json .gitignore
           branch: publish
           create_branch: true
           push_options: '--force'
