@@ -1,0 +1,16 @@
+import pathlib
+from typing import Any
+
+CACHE_DIR = pathlib.Path().joinpath('cache_data')
+
+
+def exist(key: Any) -> bool:
+    pass
+
+
+def get(key: Any) -> Any:
+    pass
+
+
+def remove(key: Any) -> bool:
+    pass

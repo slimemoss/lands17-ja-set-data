@@ -1,0 +1,37 @@
+import re
+
+import httpretty
+import pytest
+
+from cache import requests
+
+http_mock_data = [
+    ('http://dammy.com/a', 'a'),
+    ('http://dammy.com/b', 'b'),
+]
+
+
+@pytest.fixture(scope='function', autouse=True)
+def mock_req():
+    httpretty.enable(allow_net_connect=False)
+
+    for url, body in http_mock_data:
+        httpretty.register_uri(httpretty.GET, uri=url, body=body)
+    yield
+    httpretty.reset()
+    httpretty.disable()
+
+
+def test_get(fs):
+    url, body = http_mock_data[0]
+    r = requests.get(url, False)
+    assert r.text == body
+
+
+def test_path(fs):
+    p1 = requests._path('http://dammy.com/a')
+    p2 = requests._path('http://dammy.com/a')
+    p3 = requests._path('http://dammy.com/b')
+
+    assert p1 == p2
+    assert p1 != p3
