@@ -19,14 +19,14 @@ jobs:
         with:
           python-version: 3.12
       - run: pip install -r requirements.txt
-      - run: ls public_data
+      - run: ls public_data || true
       - run: python main.py
-      - run: ls public_data
+      - run: ls public_data || true
       - run: sed -i '/^public_data$/d' .gitignore
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "[Bot] auto update"
-          file_pattern: public_data/*.json
+          file_pattern: public_data/*.json .gitignore
           branch: publish
           create_branch: true
           push_options: '--force'
