@@ -12,6 +12,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: publish
+      - run: |
+          git fetch origin
+          git merge origin/master
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12
