@@ -15,9 +15,9 @@ def remove_duplicates(cards: list[cards_scheme.OracleCard]) -> list[cards_scheme
     seen = set()
     result = []
     for card in cards:
-        name = primary_name(card)
-        if name not in seen:
-            seen.add(name)
+        key = (card.set, primary_name(card))
+        if key not in seen:
+            seen.add(key)
             result.append(card)
     return result
 
