@@ -20,6 +20,7 @@ class CardFace(BaseModel):
 class OracleCard(BaseModel):
     name: str
     set: str
+    collector_number: str
     image_uris: Optional[ImageUris] = None
     card_faces: Optional[List[CardFace]] = None
 

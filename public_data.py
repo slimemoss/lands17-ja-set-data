@@ -17,7 +17,7 @@ class ImageUrlI(BaseModel):
         if card.card_faces:
             face = card.card_faces[0]
             name = face.name
-            image_uris = face.image_uris
+            image_uris = face.image_uris or card.image_uris
         else:
             name = card.name
             image_uris = card.image_uris
