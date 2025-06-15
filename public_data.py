@@ -3,27 +3,22 @@ import pathlib
 
 from pydantic import BaseModel
 
-from scryfall.cards_scheme import OracleCard
+from scryfall.cards import Card
 
 BACK_IMAGE_URL = 'https://backs.scryfall.io/small/2/2/222b7a3b-2321-4d4c-af19-19338b134971.jpg?1677416389'
 
 
 class ImageUrlI(BaseModel):
     name: str
-    url: str
+    url: str | None
 
     @classmethod
-    def from_scryfall(cls, card: OracleCard):
-        if card.card_faces:
-            face = card.card_faces[0]
-            name = face.name
-            image_uris = face.image_uris or card.image_uris
+    def from_card(cls, card: Card):
+        if card.image_uris is None:
+            url = None
         else:
-            name = card.name
-            image_uris = card.image_uris
-
-        url = image_uris.small if image_uris else BACK_IMAGE_URL
-        return cls(name=name, url=url)
+            url = card.image_uris.small
+        return cls(name=card.name, url=url)
 
 
 class ImageUrlsI(BaseModel):
