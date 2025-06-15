@@ -1,0 +1,36 @@
+name: Update data
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update_data:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: publish
+          fetch-depth: 0
+      - run: |
+          git config user.name "github action"
+          git config user.email "slimemoss@github.action"
+          git fetch origin
+          git merge origin/master
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - run: pip install -r requirements.txt
+      - run: |
+          rm -r public_data/*.json
+          python main.py
+      - run: sed -i '/^public_data$/d' .gitignore
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "[Bot] auto update"
+          branch: publish
+          create_branch: true
+          push_options: '--force'

@@ -34,6 +34,14 @@ def incomplete_sets(scryfall_data: list[Datum]):
     return res
 
 
+def child_sets(set_data: list[Datum], target: str):
+    res: list[str] = []
+    for s in set_data:
+        if s.parent_set_code == target:
+            res.append(s.code)
+    return res
+
+
 def main():
     sets_data = sets.get()
     target_codes = incomplete_sets(sets_data)
@@ -45,13 +53,20 @@ def main():
         print('次のセットを更新します。: {}'.format(target_codes))
 
     cards_by_set = cards.classify_by_set(cards.get())
-    for code in target_codes:
-        url_list = [ImageUrlI.from_scryfall(card)
-                    for card in cards_by_set[code]]
+    for target_code in target_codes:
 
-        card_count = [d for d in sets_data if d.code == code][0].card_count
+        card_list = cards_by_set.get(target_code, [])
+        for child_code in child_sets(sets_data, target_code):
+            card_list += cards_by_set.get(child_code, [])
+        card_list = cards.remove_duplicates(card_list, lambda c: c.name)
 
-        ImageUrl(code).write(ImageUrlsI(
+        url_list = [ImageUrlI.from_card(card)
+                    for card in card_list]
+
+        card_count = [d for d in sets_data if d.code ==
+                      target_code][0].card_count
+
+        ImageUrl(target_code).write(ImageUrlsI(
             data=url_list, scryfall_card_count=card_count))
 
 
