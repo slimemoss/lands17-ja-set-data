@@ -42,11 +42,8 @@ def remove_duplicates(cards: list[Card],
     for card in cards:
         k = key(card)
         if k not in seen:
-            print('first: {}'.format(k))
             seen.add(k)
             result.append(card)
-        else:
-            print('seen : {}'.format(k))
     return result
 
 
