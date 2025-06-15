@@ -1,4 +1,4 @@
-name: Update data
+name: Force update card data
 
 on:
   workflow_dispatch:
