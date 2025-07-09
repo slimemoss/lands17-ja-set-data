@@ -1,4 +1,4 @@
-name: Update data
+name: Daily / Push update
 
 on:
   schedule:
