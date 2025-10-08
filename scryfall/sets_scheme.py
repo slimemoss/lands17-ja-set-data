@@ -1,8 +1,9 @@
-from enum import Enum
-from pydantic import BaseModel
-from uuid import UUID
 from datetime import datetime
-from typing import Optional, List
+from enum import Enum
+from typing import List, Optional
+from uuid import UUID
+
+from pydantic import BaseModel
 
 
 class Object(Enum):
@@ -18,6 +19,7 @@ class SetType(Enum):
     CORE = "core"
     DRAFT_INNOVATION = "draft_innovation"
     DUEL_DECK = "duel_deck"
+    ETERNAL = "eternal"
     EXPANSION = "expansion"
     FROM_THE_VAULT = "from_the_vault"
     FUNNY = "funny"
