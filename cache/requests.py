@@ -12,7 +12,11 @@ def _path(url: str) -> Path:
 
 def _get(url: str) -> requests.Response:
     print(f'Download: {url}')
-    return requests.get(url)
+    headers = {
+        'User-Agent': 'slimemoss/1.0 (contact: x.com/slimemoss2)'
+    }
+
+    return requests.get(url, headers=headers)
 
 
 def get(url: str, clear_cache=False) -> requests.Response:
