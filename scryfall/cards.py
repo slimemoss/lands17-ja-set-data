@@ -3,7 +3,7 @@ import io
 import json
 from typing import Callable, Hashable, Optional
 
-from cache import requests
+import http_client
 from pydantic import BaseModel
 
 from scryfall import bluk
@@ -52,7 +52,7 @@ def remove_duplicates(cards: list[Card],
 
 def get():
     url = bluk.get().jsonl_download_uri
-    resp = requests.get(url)
+    resp = http_client.get(url)
 
     # .jsonl.gz 形式: gzip展開 → 1行ずつJSONパース
     with gzip.open(io.BytesIO(resp.content), 'rt', encoding='utf-8') as f:

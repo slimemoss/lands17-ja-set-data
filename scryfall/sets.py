@@ -1,9 +1,8 @@
-from cache import requests
-
+import http_client
 from scryfall import sets_scheme
 
 
 def get():
     url = 'https://api.scryfall.com/sets'
-    data = requests.get(url).json()
+    data = http_client.get(url).json()
     return sets_scheme.Sets(**data).data
