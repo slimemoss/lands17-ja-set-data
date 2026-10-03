@@ -1,10 +1,9 @@
-from cache import requests
-
+import http_client
 from lands17.filters_scheme import Filters
 
 
 def get_codes():
     url = 'https://www.17lands.com/data/filters'
-    data = Filters(**requests.get(url).json())
+    data = Filters(**http_client.get(url).json())
 
     return [d.lower() for d in data.expansions]

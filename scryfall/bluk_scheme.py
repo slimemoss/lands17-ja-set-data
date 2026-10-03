@@ -11,7 +11,5 @@ class Bluk(BaseModel):
     uri: str
     name: str
     description: str
-    size: int
-    download_uri: str
-    content_type: str
-    content_encoding: str
+    compressed_size: int
+    jsonl_download_uri: str

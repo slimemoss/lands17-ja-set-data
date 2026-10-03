@@ -7,13 +7,15 @@ from scryfall.sets_scheme import Datum, SetType
 
 
 def target_sets(data: list[Datum]):
+    land_codes = set(codes.get_codes())
+
     def target_filter(d: Datum):
         res = True
         res &= d.released_at > datetime.datetime(2023, 1, 1)
         res &= d.set_type in [SetType.EXPANSION,
                               SetType.CORE, SetType.DRAFT_INNOVATION]
         res &= d.parent_set_code == None
-        res &= d.code in codes.get_codes()
+        res &= d.code in land_codes
 
         res |= d.code == 'spg'
         return res
