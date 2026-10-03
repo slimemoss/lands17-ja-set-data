@@ -1,3 +1,6 @@
+import gzip
+import io
+import json
 from typing import Callable, Hashable, Optional
 
 from cache import requests
@@ -48,12 +51,14 @@ def remove_duplicates(cards: list[Card],
 
 
 def get():
-    url = bluk.get().download_uri
+    url = bluk.get().jsonl_download_uri
     resp = requests.get(url)
-    data = resp.json()
-    cards = OracleCards(data).root
 
-    cards = [Card.from_scryfall(c) for c in cards]
+    # .jsonl.gz 形式: gzip展開 → 1行ずつJSONパース
+    with gzip.open(io.BytesIO(resp.content), 'rt', encoding='utf-8') as f:
+        raw_cards = [OracleCard(**json.loads(line)) for line in f if line.strip()]
+
+    cards = [Card.from_scryfall(c) for c in raw_cards]
     cards = sorted(cards, key=lambda c: (c.set, c.collector_number))
     return remove_duplicates(cards, lambda c: (c.name, c.set))
 
